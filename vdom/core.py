@@ -171,8 +171,10 @@ class VDOM(object):
         attributes = {}
         for key, value in self.attributes.items():
             if callable(value):
+                print(key, value)
                 attributes[key] = create_event_handler(key, value)
             else:
+
                 attributes[key] = value
         return attributes
 
@@ -182,7 +184,7 @@ class VDOM(object):
         attr_tuple = (self.attributes.items(), {"style": dict(self.style)}.items()) if self.style else (self.attributes.items(),)
         vdom_dict = {
             'tagName': self.tag_name,
-            'attributes': dict(itertools.chain.from_iterable(attr_tuple))
+            'attributes': self.encode_attributes()
         }
         if self.key:
             vdom_dict['key'] = self.key
